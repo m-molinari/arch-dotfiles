@@ -128,4 +128,4 @@ export LESS="-R"
 
 # id_rsa
 #
-eval $(keychain --eval --quiet  id_rsa ~/.ssh/id_rsa)
+#eval $(keychain --eval --quiet  id_rsa ~/.ssh/id_rsa)
