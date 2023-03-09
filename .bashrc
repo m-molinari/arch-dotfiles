@@ -55,47 +55,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Reset
-Color_Off='\033[0m'
-
-# Regular Colors
-Red='\[\e[0;31m\]'
-Green='\[\e[0;32m\]'
-Yellow='\[\e[0;33m\]'
-Blue='\[\e[0;34m\]'
-Purple='\[\e[0;35m\]'
-Cyan='\[\e[0;36m\]'
-White='\[\e[0;37m\]'
-
-# Bold
-BRed='\[\e[1;31m\]'
-BGreen='\[\e[1;32m\]'
-BYellow='\[\e[1;33m\]'
-BBlue='\[\e[1;34m\]'
-BPurple='\[\e[1;35m\]'
-BCyan='\[\e[1;36m\]'
-BWhite='\[\e[1;37m\]'
-
-# Bold High Intensity
-BIRed='\[\e[1;91m\]'
-BIGreen='\[\e[1;92m\]'
-BIYellow='\[\e[1;93m\]'
-BIBlue='\[\e[1;94m\]'
-BIPurple='\[\e[1;95m\]'
-BICyan='\[\e[1;96m\]'
-BIWhite='\[\e[1;97m\]'
-
-#PS1="\[\e[32m\][\[\e[m\]\[\e[32m\]\u\[\e[m\]\[\e[33m\]@\[\e[m\]\[\e[1;36m\]\h\[\e[m\]:\[\e[35m\]\w\[\e[m\]\[\e[36m\]]\[\e[m\]\[\e[0;35m\]\\$\[\e[m\] "
+## Basic
+#PS1="\u@\h:\w\$ "
 
 # Colored
-PS1="${BICyan}\u${BICyan}@${BICyan}\h:${BBlue}\w\$${Color_Off} "
-
-# Basic
-#PS1="\u@\h:\w\$ "
+PS1="\[\033[1;32m\]\u\[\033[1;32m\]@\[\033[1;32m\]\h\[\033[1;34m\]:\w$\[\033[1;0m\] "
 
 # Newline
 #export PS1="\[\033[0;31m\]\342\224\214\342\224\200\\[\033[01;32m\]\u\[\033[01;33m\]@\[\033[01;35m\]\h\[\033[0;31m\]]\342\224\200[\[\033[0;34m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$ \[\e[0m\]"
-
 
 # neofetch
 #
