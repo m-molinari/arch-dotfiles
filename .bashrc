@@ -55,6 +55,10 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# Editor
+export VISUAL=vim
+export EDITOR=vim
+
 ## Basic
 #PS1="\u@\h:\w\$ "
 
