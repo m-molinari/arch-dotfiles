@@ -1,43 +1,45 @@
-
-# It will not be overwritten, so edit it as you like.
-#
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
-#
 
 # i3 config file (v4)
-#
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod4
+set $alt Mod1
+
+# Variables
+set $terminal terminator
+
+# Focus
+focus_follows_mouse yes
 
 # Default Workspace Layout <default|stacking|tabbed>
-#
 workspace_layout tabbed
-#workspace_layout default
+
+# title_align left|center|right
+title_align center
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
-#
-#default_border pixel 1
-#default_floating_border normal
+default_border normal
+default_floating_border normal
 
-# Hide borders
-#
-#hide_edge_borders none
+# hide_edge_borders none|vertical|horizontal|both|smart|smart_no_gaps
+hide_edge_borders smart
 
-# change borders
-#
-bindsym $mod+u border none
-bindsym $mod+y border pixel 1
-bindsym $mod+n border normal
+# If activated, marks (see [vim_like_marks]) on windows are drawn in their window decoration
+show_marks yes
+
+# Activate smart borders (always)
+#smart_borders on
+
+# Activate smart borders (only when there are effectively no gaps)
+#smart_borders no_gaps
 
 # Floating default size
-floating_minimum_size 900 x 700
-floating_maximum_size 900 x 700
+#floating_minimum_size 900 x 700
+#floating_maximum_size 900 x 700
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-#
 # font pango:monospace 9
 font xft:URWGothic-Book 9
 
@@ -45,9 +47,12 @@ font xft:URWGothic-Book 9
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+################################################################################################
+# Autostart applications
+################################################################################################
+
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-#
 exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -55,26 +60,171 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-#
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-#
+# Volume icon tray
+exec --no-startup-id volumeicon
+
+# Keymap
+exec setxkbmap it
+
+# cursor
+exec_always --no-startup-id setcursor
+
+# Picom compositor with transparency
+exec --no-startup-id picom -CGb
+#exec_always --no-startup-id "killall -q /usr/bin/picom; /usr/bin/picom --xrender-sync-fence --config ~/.config/picom/picom.conf -b"
+
+# Notifications
+exec_always --no-startup-id dunst
+#exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
+
+# Authentication agent
+#policykit-desktop-privileges policykit-1-gnome
+exec_always --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+
+# Gnome keyring
+exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start
+
+# NetworkManager
 exec --no-startup-id nm-applet
+
+# Power manager
+exec --no-startup-id xfce4-power-manager
+
+# Conky
+#exec conky -c ~/.config/conky/conky.conf
+
+# Display resolution change output with real display
+# exec_always xrand --output Virtual1 --mode 1920x1080
+exec_always  ~/screenlayout/virtual.sh
+
+# Wallpaper
+#exec_always feh --bg-fill /usr/share/backgrounds/mate/desktop/Ubuntu-Mate-Dark-no-logo.png
+#exec_always feh --bg-fill /usr/share/backgrounds/archlinux/small.png
+exec_always feh --bg-fill /usr/share/backgrounds/gnome/LightWaves.jpg
+
+# Autolock screen after inactivity
+#exec xautolock -detectsleep -time 20 -locker "i3lock"
+#exec xautolock -detectsleep -time 20 -locker "~/.config/i3lock/lock.sh"
+exec xautolock -detectsleep -time 15 -locker "i3lock-fancy"
+
+# Sounds
+#exec --no-startup-id pulseaudio
+#exec --no-startup-id pa-applet
+
+################################################################################################
+# MONITOR
+################################################################################################
+# Identify monitor name by run xrandr
+
+# Mirror
+#xrandr --output VGA1 --mode 1024x768 --same-as LVDS1
+
+# Extended
+#xrandr --output VGA1 --mode 1024x768 --right-of LVDS1
+
+################################################################################################
+# KEYBINDINGS
+################################################################################################
+
+#bindsym $mod+z exec ~/.config/i3/scripts/XXX
+
+# Split in horizontal orientation
+bindsym $mod+h split h ;exec notify-send 'tile horizontally'
+
+# Split in vertical orientation
+bindsym $mod+v split v;exec notify-send 'tile vertically'
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+t layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+s floating toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Focus the parent container
+bindsym $mod+a focus parent
+
+# Focus the child container
+#bindsym $mod+d focus child
+
+bindsym $mod+Ctrl+m exec terminator -e 'alsamixer'
+bindsym $mod+F5 exec terminator -e 'mocp'
+bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+
+# Start a terminal
+bindsym $mod+Return exec $terminal
+
+# Kill focused window
+bindsym $mod+q kill
+
+# dmenu (a program launcher)
+#bindsym $mod+d exec --no-startup-id dmenu_run
+
+# rofi
+#bindsym $mod+d exec rofi -show run
+#bindcode 133 --release exec rofi -show run
+#bindcode 133 --release exec --no-startup-id rofi -show drun -display-drun "Search" -theme Pop-Dark
+bindsym $mod+d  exec --no-startup-id rofi -show drun -display-drun "Search" -theme Pop-Dark
+
+# Press $mod+o followed by either f, t, Escape or Return to launch firefox,
+# thunderbird or return to the default mode, respectively.
+#set $mode_launcher Launch: [f]irefox [t]hunderbird [g]google-chrome-stable [k]keepassxc [n]nemo
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+    bindsym f exec firefox
+    bindsym t exec thunderbird
+    bindsym g exec google-chrome-stable --password-store=gnome
+    bindsym k exec keepassxc
+    bindsym n exec nemo
+    bindsym v exec pavucontrol
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+
+bindsym $mod+c exec /usr/bin/nm-connection-editor
+bindsym $mod+Ctrl+f exec `which firefox`
+bindsym $mod+Ctrl+g exec `which google-chrome-stable --password-store=gnome`
+bindsym $mod+Ctrl+t exec `which thunderbird`
+bindsym $mod+Ctrl+n exec `which nemo`
+bindsym $mod+Ctrl+k exec `which keepassxc`
+bindsym $mod+Ctrl+v exec `which pavucontrol`
+#bindsym $mod+s exec ~/.config/i3/scripts/startup_applications.sh
+
+# Alt + Tab switching
+bindsym $alt+Tab focus right
+
+# Resize
+bindsym $mod+r mode "resize"
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Keybind for lock screen
+bindsym Ctrl+$alt+l exec i3lock-fancy
+#bindsym $mod+x exec i3lock -c 040003
+#bindsym $mod+x exec ~/.config/i3lock/lock.sh
 
 ################################################################################################
 # SOUND
 ################################################################################################
 
-exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec terminator -e 'alsamixer'
-#exec --no-startup-id pulseaudio
-#exec --no-startup-id pa-applet
-#bindsym $mod+Ctrl+m exec pavucontrol
-
 # Use pactl to adjust volume in PulseAudio.
-#
 #set $refresh_i3status killall -SIGUSR1 i3status
 #bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 #bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -82,25 +232,21 @@ bindsym $mod+Ctrl+m exec terminator -e 'alsamixer'
 #bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Change volume or toggle mute
-#
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 
 # Change volume or toggle mute
-#
 #bindsym $mod+F1 exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 #bindsym $mod+F3 exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
 #bindsym $mod+F2 exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
 
-# volume Page_Up Page_Down 
-#
+# Volume Page_Up Page_Down 
 #bindsym $mod+Page_Up exec --no-startup-id amixer -q set Master 3%+ -q
 #bindsym $mod+Page_Down exec --no-startup-id amixer -q set Master 3%- -q
 #bindsym $mod+End exec --no-startup-id amixer -q set Master toggle
 
 # Screen brightness controls
-#
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
@@ -110,149 +256,69 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightne
 # bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
 
 ################################################################################################
-# Screenshots
-################################################################################################
-
-# PrtScrn = Full Screen
-bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
-# Super + PrtScrn = Active Window
-bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
-# Shift + PrtScrn = Selection
-bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
-
-# Clipboard Screenshots
-#
-# Ctrl + PrtScrn = Clipboard Full Screen
-bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
-# Ctrl + Shift + PrtScrn = Clipboard Selection
-bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
-# Ctrl + Super + PrRScrn = Clipboard Active Window
-bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
-
-# Use Mouse+$mod to drag floating windows to their wanted position
-#
-floating_modifier $mod
-
-################################################################################################
-# Start Applications
-################################################################################################
-
-#bindsym $mod+F3 exec ranger
-#bindsym $mod+t exec --no-startup-id pkill picom
-#bindsym $mod+Ctrl+t exec --no-startup-id picom -b
-bindsym $mod+F5 exec terminator -e 'mocp'
-bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
-
-# start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec terminator
-
-# kill focused window
-#
-bindsym $mod+q kill
-
-# start dmenu (a program launcher)
-#
-#bindsym $mod+d exec --no-startup-id dmenu_run
-
-# A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
-# There also is i3-dmenu-desktop which only displays applications shipping a
-# .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
-#
-#bindsym $mod+d exec rofi -show run
-bindcode 133 --release exec rofi -show run
-
-################################################################################################
 # FOCUS
 ################################################################################################
 
+# Focus Applications
+bindsym $mod+Shift+f [class="Firefox"] focus
+bindsym $mod+Shift+g [class="Google-chrome"] focus
+bindsym $mod+Shift+b [class="Terminator"] focus
+bindsym $mod+Shift+t [class="Thunderbird"] focus
+bindsym $mod+Shift+k [class="KeePassXC"] focus
+bindsym $mod+Shift+n [class="Nemo"] focus
+
 # change focus
-#
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+ograve focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+ograve focus right
 
 # alternatively, you can use the cursor keys:
-#
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-#
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+ograve move right
+#bindsym $mod+Ctrl+j move left
+#bindsym $mod+Ctrl+k move down
+#bindsym $mod+Ctrl+l move up
+#bindsym $mod+Ctrl+ograve move right
 
 # alternatively, you can use the cursor keys:
-#
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Ctrl+Left move left
+bindsym $mod+Ctrl+Down move down
+bindsym $mod+Ctrl+Up move up
+bindsym $mod+Ctrl+Right move right
 
 ################################################################################################
-# LAYOUT & SPLIT
+# Screenshots Keybindings
 ################################################################################################
 
-# split in horizontal orientation
+## PrtScrn = Full Screen
+#bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
+## Super + PrtScrn = Active Window
+#bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
+## Shift + PrtScrn = Selection
+#bindsym $mod+p exec --no-startup-id maim --select "/home/$USER/Pictures/Screenshot_from_$(date '+%Y-%m-%d %H:%M:%S').png"
 #
-bindsym $mod+h split h ;exec notify-send 'tile horizontally'
-
-# split in vertical orientation
+# Clipboard Screenshots
 #
-bindsym $mod+v split v;exec notify-send 'tile vertically'
+## Ctrl + PrtScrn = Clipboard Full Screen
+#bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
+## Ctrl + Shift + PrtScrn = Clipboard Selection
+#bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+## Ctrl + Super + PrRScrn = Clipboard Active Window
+#bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
 
-# enter fullscreen mode for the focused container
-#
-bindsym $mod+f fullscreen toggle
+bindsym Print exec --no-startup-id flameshot gui
 
-# change container layout (stacked, tabbed, toggle split)
-#
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-#
-bindsym $mod+space floating toggle
-
-# change focus between tiling / floating windows
-#
-#bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-#
-bindsym $mod+a focus parent
-
-# focus the child container
-#
-#bindsym $mod+d focus child
-
-################################################################################################
-# CUSTOM KEYBINDINGS
-################################################################################################
-
-bindsym $mod+c exec /usr/bin/nm-connection-editor
-bindsym $mod+Ctrl+g exec terminator -e 'grep bindsym ~/.config/i3/config  | grep -v "^#" | grep -v "move container to workspace" | grep -v "workspace number" |less'
-bindsym $mod+Ctrl+f exec `which firefox`
-bindsym $mod+Ctrl+t exec `which thunderbird`
-bindsym $mod+Ctrl+n exec `which nemo`
-
-# Alt + Tab switching
-bindsym Mod1+Tab focus right
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
 
 ################################################################################################
 # WORKSPACES
 ################################################################################################
-
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
 
 set $ws1 "1"
 #set $ws1 "1:  Terminal"
@@ -266,6 +332,9 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+# Assume you are on workspace "1: www" and switch to "2: IM" using mod+2 because somebody sent you a message. You don’t need to remember where you came from now, you can just press $mod+2 again to switch back to "1: www"
+workspace_auto_back_and_forth yes
 
 # switch to workspace
 #
@@ -294,27 +363,10 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 ################################################################################################
-# RELOAD RESTART
-################################################################################################
-
-# reload the configuration file
-#
-bindsym $mod+Shift+c reload
-
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-#
-bindsym $mod+Shift+r restart
-
-# exit i3 (logs you out of your X session)
-#
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-
-################################################################################################
 # RESIZE
 ################################################################################################
 
 # resize window (you can also use the mouse for that)
-#
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -322,10 +374,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym ograve resize grow width 10 px or 10 ppt
+        #bindsym j resize shrink width 10 px or 10 ppt
+        #bindsym k resize grow height 10 px or 10 ppt
+        #bindsym l resize shrink height 10 px or 10 ppt
+        #bindsym ograve resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -338,8 +390,6 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
-
-bindsym $mod+r mode "resize"
 
 # Color palette used for the terminal
 # If you want your bar to have the same background color as your 
@@ -425,45 +475,44 @@ exec conky -c ~/.config/conky/conky.conf
 
 # Display resolution change output with real display
 #
-# exec_always xrand --output Virtual1 --mode 1920x1080
-exec_always  ~/screenlayout/virtual.sh
-
-# Wallpaper
-#
-exec_always feh --bg-fill /usr/share/backgrounds/archlinux/small.png
-
-# Keybind for lock screen
-#
-#bindsym $mod+x exec i3lock -c 040003
-bindsym $mod+x exec /home/$USER/.config/i3lock/lock.sh
-
-# Autolock screen after inactivity
-#
-exec xautolock -detectsleep -time 20 -locker "~/.config/i3lock/lock.sh"
+### please set your primary output first. Example: 'xrandr --output eDP1 --primary'
+##  tray_output primary
+##  tray_output eDP1
 
 ################################################################################################
 # FLOATING AND RULES
 ################################################################################################
-
 # Find class/title name typing 'xprop' and click on window
 # take vlue of WM_CLASS(STRING)
 
-#for_window [class="Terminal"] move to workspace $ws1
-#for_window [class="firefox"] move to workspace $ws2
-#for_window [class="Thunderbird"] move to workspace $ws3
+# Compares the window class (the second part of WM_CLASS)
+# Compares the window instance (the first part of WM_CLASS)
+# Compares the window role (WM_WINDOW_ROLE).
+# Compares the X11 window ID, which you can get via xwininfo for example.
+# Compares the X11 window title (_NET_WM_NAME or WM_NAME as fallback).
+#
+# sticky enable|disable|toggle
+# floating enable|disable
+# border normal|pixel|toggle [<n>]
+# resize grow|shrink <direction> [<px> px [or <ppt> ppt]]
+# resize set [width] <width> [px | ppt]
+# resize set height <height> [px | ppt]
+# resize set [width] <width> [px | ppt] [height] <height> [px | ppt]
+# move window|container to mark <mark>
 
-# Open specific applications in floating mode
+# Workspace rule
+for_window [class="KeePassXC"] move to workspace $ws2
+
+# Floating Rule
+for_window [class="thunderbird-default" instance="Msgcompose"] floating enable
 for_window [title="alsamixer"] floating enable border pixel 1
 for_window [title="File Transfer*"] floating enable
 for_window [title="Terminator Preferences"] floating enable
-#for_window [class="Nemo"] floating enable sticky enable
-for_window [class="KeePassXC"] floating enable resize set 800px 600px
-for_window [class="Skype"] floating enable resize set 800px 600px
-for_window [class="VirtualBox Manager"] floating enable resize set 800px 600px
-for_window [class="lightdm-gtk-greeter-settings"] floating enable resize set 800px 600px
-for_window [class="Galculator"] floating enable border pixel 1
-for_window [class="GParted"] floating enable border normal
+for_window [class="KeePassXC"] floating enable resize set 900px 800px
+for_window [class="VirtualBox Manager"] floating enable resize set 900px 800px
+for_window [class="lightdm-gtk-greeter-settings"] floating enable resize set 900px 800px
+for_window [class="Galculator" class="Gnome-calculator" instance="gnome-calculator"] floating enable
+for_window [class="GParted"] floating enable
 for_window [class="Lightdm-settings"] floating enable
-for_window [class="Lxappearance"] floating enable border normal
-for_window [class="Nitrogen"] floating enable sticky enable border normal
-for_window [class="Pamac-manager"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Nitrogen"] floating enable
