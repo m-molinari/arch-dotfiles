@@ -100,9 +100,7 @@ exec --no-startup-id xfce4-power-manager
 exec_always  ~/screenlayout/virtual.sh
 
 # Wallpaper
-#exec_always feh --bg-fill /usr/share/backgrounds/mate/desktop/Ubuntu-Mate-Dark-no-logo.png
-#exec_always feh --bg-fill /usr/share/backgrounds/archlinux/small.png
-exec_always feh --bg-fill /usr/share/backgrounds/gnome/LightWaves.jpg
+exec_always feh --bg-fill /usr/share/backgrounds/archlinux/small.png
 
 # Autolock screen after inactivity
 #exec xautolock -detectsleep -time 20 -locker "i3lock"
@@ -216,9 +214,9 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Keybind for lock screen
-bindsym Ctrl+$alt+l exec i3lock-fancy
+#bindsym Ctrl+$alt+l exec i3lock-fancy
 #bindsym $mod+x exec i3lock -c 040003
-#bindsym $mod+x exec ~/.config/i3lock/lock.sh
+bindsym Ctrl+$alt+l exec ~/.config/i3lock/lock.sh
 
 ################################################################################################
 # SOUND
