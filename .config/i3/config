@@ -169,8 +169,8 @@ bindsym $mod+q kill
 # rofi
 #bindsym $mod+d exec rofi -show run
 #bindcode 133 --release exec rofi -show run
-#bindcode 133 --release exec --no-startup-id rofi -show drun -display-drun "Search" -theme Pop-Dark
-bindsym $mod+d  exec --no-startup-id rofi -show drun -display-drun "Search" -theme Pop-Dark
+#bindcode 133 --release exec --no-startup-id rofi -show drun -display-drun "Search"
+bindsym $mod+d  exec --no-startup-id rofi -show drun -display-drun "Search"
 
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
 # thunderbird or return to the default mode, respectively.
