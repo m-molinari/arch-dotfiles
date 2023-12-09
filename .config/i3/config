@@ -28,6 +28,10 @@ hide_edge_borders smart
 # If activated, marks (see [vim_like_marks]) on windows are drawn in their window decoration
 show_marks yes
 
+# Gaps
+gaps inner 8
+gaps outer 2
+
 # Activate smart borders (always)
 #smart_borders on
 
@@ -230,9 +234,9 @@ bindsym Ctrl+$alt+l exec ~/.config/i3lock/lock.sh
 #bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+#bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+#bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+#bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 
 # Change volume or toggle mute
 #bindsym $mod+F1 exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
