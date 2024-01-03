@@ -88,7 +88,7 @@ exec_always --no-startup-id dunst
 exec_always --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 
 # Gnome keyring
-exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start
+exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh
 
 # NetworkManager
 exec --no-startup-id nm-applet
