@@ -100,3 +100,8 @@ export LESS="-R"
 # id_rsa
 #
 #eval $(keychain --eval --quiet  id_rsa ~/.ssh/id_rsa)
+
+# Kubernetes
+source <(kubectl completion bash)
+alias k=kubectl
+complete -o default -F __start_kubectl k
