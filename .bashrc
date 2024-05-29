@@ -101,6 +101,11 @@ export LESS="-R"
 #
 #eval $(keychain --eval --quiet  id_rsa ~/.ssh/id_rsa)
 
+# SSH add
+#
+eval `keychain --noask --eval id_rsa -q` && ssh-add -l > /dev/null || ssh-add
+
+
 # Kubernetes
 source <(kubectl completion bash)
 alias k=kubectl
